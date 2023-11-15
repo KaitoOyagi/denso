@@ -93,10 +93,19 @@ def create_cloud(data):
         ]
         fpath = "./姫明朝しらゆきmini.otf"
 
-        def random_color(
+        color_palette = [
+            "#8246AF",
+            "#F08CAF",
+            "#DC0032",
+            "#FAB932",
+            "#1E9146",
+            "#0091BE",
+        ]
+
+        def custom_color(
             word, font_size, position, orientation, font_path, random_state
         ):
-            return f"rgb({random.randint(0, 255)}, {random.randint(0, 255)}, {random.randint(0, 255)})"
+            return random.choice(color_palette)
 
         wordcloud = WordCloud(
             font_path=fpath,  # フォントを指定しない
