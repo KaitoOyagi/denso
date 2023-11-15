@@ -1,0 +1,33 @@
+<!-- index.html -->
+<form action="/generate_wordcloud" method="GET">
+  <h3 class="p-3 mb-2 bg-info text-white">Word Cloud</h3>
+  <button type="submit">Start</button>
+</form>
+
+<script>
+  document.querySelector("form").addEventListener("submit", function (event) {
+    event.preventDefault(); // Prevent the form from submitting the traditional way
+
+    fetch("/generate_wordcloud")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.text(); // assuming the response is the image path
+      })
+      .then((imagePath) => {
+        if (imagePath) {
+          console.log(imagePath);
+          // Redirect to the /result/ route with query parameter
+          window.location.href = `/result/?image_path=${encodeURIComponent(
+            imagePath
+          )}`;
+        } else {
+          console.error("Error: No data received");
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  });
+</script>
