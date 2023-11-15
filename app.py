@@ -32,10 +32,14 @@ def index():
 @app.route("/result/")
 def result():
     # セッションから画像パスを取得
-    image_path = session.pop("image_path")
+    image_path = session.pop("image_path", None)
+
+    # 画像パスが存在しない場合のエラーハンドリング
+    if image_path is None:
+        return "Error: No image path in session"
 
     # 画像パスをテンプレートに渡す
-    return render_template("result.html")
+    return render_template("result.html", image_path=image_path)
 
 
 if __name__ == "__main__":
