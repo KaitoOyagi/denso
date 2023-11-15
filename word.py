@@ -91,7 +91,7 @@ def create_cloud(data):
             "(",
             ")",
         ]
-        fpath = "/content/姫明朝しらゆきmini.otf"
+        fpath = "./姫明朝しらゆきmini.otf"
 
         def random_color(
             word, font_size, position, orientation, font_path, random_state
