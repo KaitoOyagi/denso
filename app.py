@@ -1,5 +1,5 @@
 # app.py
-from flask import Flask, render_template, request, session, redirect, url_for
+from flask import Flask, render_template, request, session, redirect, url_for, flash
 from word import create_cloud
 
 app = Flask(__name__)
@@ -9,17 +9,19 @@ app.secret_key = "安全なシークレットキー"  # これをアプリケー
 # データを取得するエンドポイントを作成
 @app.route("/generate_wordcloud")
 def generate_wordcloud():
-    # ここでGoogle Apps Scriptからデータを取得する処理を追加
-    # 例: Google Sheets APIを使用してデータを取得する
-    # 仮のデータを生成
-    data = ["テキストデータ1", "テキストデータ2", "テキストデータ3"]
-    image_path = create_cloud(data)
+    try:
+        data = ["テキストデータ1", "テキストデータ2", "テキストデータ3"]
+        image_path = create_cloud(data)
 
-    # 画像パスをセッションに保存
-    session["image_path"] = image_path
+        # 画像パスをセッションに保存
+        session["image_path"] = image_path
 
-    # ワードクラウド生成後にresult.htmlを表示
-    return redirect(url_for("result"))
+        # エラーハンドリングが成功した場合はそのままリダイレクト
+        return redirect(url_for("result"))
+    except Exception as e:
+        # エラーが発生した場合はエラーメッセージをフラッシュ
+        flash(f"ワードクラウドの生成中にエラーが発生しました: {str(e)}", "error")
+        return redirect(url_for("index"))
 
 
 @app.route("/")
@@ -30,11 +32,16 @@ def index():
 @app.route("/result/")
 def result():
     # セッションから画像パスを取得
-    image_path = session.pop("image_path", None)
+    image_path = session.pop("image_path")
 
     # 画像パスをテンプレートに渡す
-    return render_template("result.html", image_path=image_path)
+    return render_template("result.html")
 
+
+app.config["SESSION_TYPE"] = "filesystem"
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_USE_SIGNER"] = True
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=1)
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
