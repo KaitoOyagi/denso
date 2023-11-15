@@ -4,9 +4,10 @@ from word import create_cloud
 
 app = Flask(__name__)
 app.secret_key = "安全なシークレットキー"  # これをアプリケーションに適したセキュアなシークレットキーに変更してください
+# アプリケーションのセッションの設定
+app.config["SESSION_TYPE"] = "filesystem"
 
 
-# データを取得するエンドポイントを作成
 @app.route("/generate_wordcloud")
 def generate_wordcloud():
     try:
@@ -15,6 +16,9 @@ def generate_wordcloud():
 
         # 画像パスをセッションに保存
         session["image_path"] = image_path
+
+        # デバッグ用：セッションの内容を表示
+        print(session)
 
         # エラーハンドリングが成功した場合はそのままリダイレクト
         return redirect(url_for("result"))
