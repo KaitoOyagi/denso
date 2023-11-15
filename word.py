@@ -116,7 +116,7 @@ def create_cloud(data):
             max_words=30,
             min_font_size=4,
             collocations=False,
-            color_func=random_color,
+            color_func=custom_color,
         ).generate(words)
 
         # ファイルに保存
