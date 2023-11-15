@@ -117,12 +117,17 @@ def create_cloud(data):
         # S3に画像をアップロード
         s3_bucket_name = "wordcloud--bucket"  # Replace with your S3 bucket name
         s3_object_key = "result/wordcloud.png"  # Specify the S3 object key after upload
+        try:
+            upload_to_s3(local_output_image_path, s3_bucket_name, s3_object_key)
 
-        upload_to_s3(local_output_image_path, s3_bucket_name, s3_object_key)
+            # S3上の画像のURLを返す
+            s3_image_url = f"https://{s3_bucket_name}.s3.amazonaws.com/{s3_object_key}"
+            print(f"S3 Image URL: {s3_image_url}")  # 追加: S3上の画像のURLをログに出力
+            return s3_image_url
 
-        # S3上の画像のURLを返す
-        s3_image_url = f"https://{s3_bucket_name}.s3.amazonaws.com/{s3_object_key}"
-        return s3_image_url
+        except Exception as e:
+            print(f"Error uploading to S3: {str(e)}")  # 追加: S3へのアップロード時のエラーをログに出力
+            raise e
 
 
 def upload_to_s3(local_file, bucket, s3_key, content_type="image/png"):
