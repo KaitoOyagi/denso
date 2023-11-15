@@ -32,7 +32,7 @@ def index():
 @app.route("/result/")
 def result():
     # セッションから画像パスを取得
-    image_path = session.pop("image_path", None)
+    image_path = session.get("image_path")
 
     # 画像パスが存在しない場合のエラーハンドリング
     if image_path is None:
