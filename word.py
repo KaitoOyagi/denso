@@ -110,11 +110,15 @@ def create_cloud(data):
             color_func=random_color,
         ).generate(words)
 
+        # ファイルに保存
+        local_output_image_path = "./static/image/wordcloud.png"
+        wordcloud.to_file(local_output_image_path)
+
         # S3に画像をアップロード
         s3_bucket_name = "wordcloud--bucket"  # Replace with your S3 bucket name
         s3_object_key = "result/wordcloud.png"  # Specify the S3 object key after upload
         try:
-            upload_to_s3(s3_bucket_name, s3_object_key)
+            upload_to_s3(local_output_image_path, s3_bucket_name, s3_object_key)
 
             # S3上の画像のURLを返す
             s3_image_url = f"https://{s3_bucket_name}.s3.amazonaws.com/{s3_object_key}"
@@ -126,7 +130,7 @@ def create_cloud(data):
             raise e
 
 
-def upload_to_s3(bucket, s3_key, content_type="image/png"):
+def upload_to_s3(local_file, bucket, s3_key, content_type="image/png"):
     try:
         s3 = boto3.client(
             "s3",
@@ -139,7 +143,7 @@ def upload_to_s3(bucket, s3_key, content_type="image/png"):
             "ContentType": content_type,
         }
 
-        s3.upload_file(bucket, s3_key, ExtraArgs=extra_args)
+        s3.upload_file(local_file, bucket, s3_key, ExtraArgs=extra_args)
         print("Upload Successful")
 
     except FileNotFoundError:
@@ -150,6 +154,7 @@ def upload_to_s3(bucket, s3_key, content_type="image/png"):
 
 # ファイルをアップロードする際に ContentType を指定
 upload_to_s3(
+    local_file="./static/image/wordcloud.png",
     bucket="wordcloud--bucket",
     s3_key="result/wordcloud.png",
 )
