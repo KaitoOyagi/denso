@@ -8,6 +8,26 @@ app.secret_key = "安全なシークレットキー"  # これをアプリケー
 app.config["SESSION_TYPE"] = "filesystem"
 
 
+@app.route("/trigger_wordcloud", methods=["POST"])
+def trigger_wordcloud():
+    try:
+        # POST リクエストからデータを取得
+        data = request.json["data"]
+
+        # WordCloud 生成
+        image_path = create_cloud(data)
+
+        # 画像パスをセッションに保存
+        session["image_path"] = image_path
+
+        # 成功時のレスポンス
+        return {"status": "success", "message": "WordCloud generated successfully"}
+
+    except Exception as e:
+        # エラーが発生した場合のレスポンス
+        return {"status": "error", "message": str(e)}
+
+
 @app.route("/generate_wordcloud")
 def generate_wordcloud():
     try:
