@@ -113,7 +113,7 @@ def create_cloud(data):
             height=600,
             background_color="white",
             stopwords=set(stop_words),
-            max_words=100,
+            max_words=70,
             min_font_size=4,
             collocations=False,
             color_func=custom_color,
