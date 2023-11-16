@@ -12,7 +12,7 @@ app.config["SESSION_TYPE"] = "filesystem"
 def trigger_wordcloud():
     try:
         # POST リクエストからデータを取得
-        data = request.json["data"]
+        data = request.json
 
         # WordCloud 生成
         image_path = create_cloud(data)
