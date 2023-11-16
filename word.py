@@ -41,7 +41,7 @@ def create_cloud(data):
                     word_count[word] += 1  # 単語の出現回数をカウント
 
     # 単語の出現回数が1回のものを削除
-    word_list = [word for word in word_list if word_count[word] > 1]
+    # word_list = [word for word in word_list if word_count[word] > 1]
 
     words = " ".join(word_list)
     print(words)
