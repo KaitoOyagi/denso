@@ -1,15 +1,11 @@
 # app.py
 from flask import Flask, render_template, request, session, redirect, url_for, flash
 from word import create_cloud
-from concurrent.futures import ThreadPoolExecutor
 
 app = Flask(__name__)
 app.secret_key = "安全なシークレットキー"  # これをアプリケーションに適したセキュアなシークレットキーに変更してください
 # アプリケーションのセッションの設定
 app.config["SESSION_TYPE"] = "filesystem"
-
-
-executor = ThreadPoolExecutor(2)  # 適切なスレッド数を選択
 
 
 @app.route("/trigger_wordcloud", methods=["POST"])
@@ -18,17 +14,14 @@ def trigger_wordcloud():
         # POST リクエストからデータを取得
         data = request.json
 
-        # WordCloud生成を非同期で行う
-        future = executor.submit(create_cloud, data)
+        # WordCloud 生成
+        image_path = create_cloud(data)
 
         # 画像パスをセッションに保存
-        session["image_path"] = future.result()
+        session["image_path"] = image_path
 
         # 成功時のレスポンス
-        return {
-            "status": "success",
-            "message": "WordCloud generation started successfully",
-        }
+        return {"status": "success", "message": "WordCloud generated successfully"}
 
     except Exception as e:
         # エラーが発生した場合のレスポンス
