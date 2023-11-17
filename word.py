@@ -76,7 +76,7 @@ def create_cloud(data):
         "(",
         ")",
     ]
-    fpath = "./DENSOSansTP2017-Bold.woff"
+    fpath = "./姫明朝しらゆきmini.otf"
 
     color_palette = [
         "#8246AF",
