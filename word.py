@@ -142,11 +142,3 @@ def upload_to_s3(local_file, bucket, s3_key, content_type="image/png"):
         print("The file was not found")
     except NoCredentialsError:
         print("Credentials not available")
-
-
-# ファイルをアップロードする際に ContentType を指定
-upload_to_s3(
-    local_file="./static/image/wordcloud.png",
-    bucket="wordcloud--bucket",
-    s3_key="result/wordcloud.png",
-)
