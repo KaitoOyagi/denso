@@ -158,7 +158,7 @@ def create_cloud(data):
     wordcloud.to_file(local_output_image_path)
 
     # S3に画像をアップロード
-    s3_bucket_name = "wordcloud--bucket"  # Replace with your S3 bucket name
+    s3_bucket_name = "denso-wordcloud"  # Replace with your S3 bucket name
     s3_object_key = "result/wordcloud.png"  # Specify the S3 object key after upload
     try:
         upload_to_s3(local_output_image_path, s3_bucket_name, s3_object_key)
@@ -177,8 +177,8 @@ def upload_to_s3(local_file, bucket, s3_key, content_type="image/png"):
     try:
         s3 = boto3.client(
             "s3",
-            aws_access_key_id="AKIARCEU2H6H3BVOAOEK",
-            aws_secret_access_key="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",
+            aws_access_key_id="AKIAYQDI7YN52A2PWHFF",
+            aws_secret_access_key="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",
         )
 
         # ExtraArgs パラメータを使用してメタデータを指定
