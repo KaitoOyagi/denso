@@ -164,9 +164,11 @@ def create_cloud(data):
         "https://7uf9jiyfpf.execute-api.ap-northeast-1.amazonaws.com/wordcloud"
     )
 
+    headers = {"x-custom-auth": "true"}
+
     with open(local_output_image_path, "rb") as file:
         files = {"file": (s3_object_key, file, "image/png")}  # s3_object_key を使用する
-        response = requests.post(api_gateway_endpoint, files=files)
+        response = requests.post(api_gateway_endpoint, files=files, headers=headers)
 
     if response.status_code == 200:
         s3_image_url = response.json().get("s3_image_url")
