@@ -177,8 +177,8 @@ def upload_to_s3(local_file, bucket, s3_key, content_type="image/png"):
     try:
         s3 = boto3.client(
             "s3",
-            aws_access_key_id="AKIAYQDI7YN5ZBWRYENE",
-            aws_secret_access_key="w+KLLrvue6SZ4TOamazAaT2u42k8QxIzNaRw3cZduu",
+            aws_access_key_id="AKIAYQDI7YN5UK3HF6UW",
+            aws_secret_access_key="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",
         )
 
         # ExtraArgs パラメータを使用してメタデータを指定
