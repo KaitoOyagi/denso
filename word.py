@@ -18,7 +18,8 @@ def create_cloud(data):
     text_data = " ".join(data)
 
     # テキストデータをトークナイズ
-    t = Tokenizer("./dictionary.csv", udic_type="simpledic", udic_enc="utf8")
+    custom_dict_path = "./dictionary.csv"
+    t = Tokenizer(udic=custom_dict_path, udic_type="simpledic", udic_enc="utf8")
     tokens = t.tokenize(text_data)
 
     word_list = []
