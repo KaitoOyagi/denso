@@ -158,12 +158,14 @@ def create_cloud(data):
     wordcloud.to_file(local_output_image_path)
 
     # S3に画像をアップロード
+    s3_object_key = "result/wordcloud.png"  # フォルダを含むキー
+
     api_gateway_endpoint = (
         "https://7uf9jiyfpf.execute-api.ap-northeast-1.amazonaws.com/wordcloud"
     )
 
     with open(local_output_image_path, "rb") as file:
-        files = {"file": (local_output_image_path, file, "image/png")}
+        files = {"file": (s3_object_key, file, "image/png")}  # s3_object_key を使用する
         response = requests.post(api_gateway_endpoint, files=files)
 
     if response.status_code == 200:
