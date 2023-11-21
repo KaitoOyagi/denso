@@ -147,7 +147,7 @@ def create_cloud(data):
         height=600,
         background_color="white",
         stopwords=set(stop_words),
-        max_words=70,
+        max_words=50,
         min_font_size=4,
         collocations=False,
         color_func=custom_color,
@@ -158,38 +158,18 @@ def create_cloud(data):
     wordcloud.to_file(local_output_image_path)
 
     # S3に画像をアップロード
-    s3_bucket_name = "denso-wordcloud"  # Replace with your S3 bucket name
-    s3_object_key = "result/wordcloud.png"  # Specify the S3 object key after upload
-    try:
-        upload_to_s3(local_output_image_path, s3_bucket_name, s3_object_key)
+    api_gateway_endpoint = (
+        "https://7uf9jiyfpf.execute-api.ap-northeast-1.amazonaws.com/wordcloud"
+    )
 
-        # S3上の画像のURLを返す
-        s3_image_url = f"https://{s3_bucket_name}.s3.amazonaws.com/{s3_object_key}"
-        print(f"S3 Image URL: {s3_image_url}")  # 追加: S3上の画像のURLをログに出力
+    with open(local_output_image_path, "rb") as file:
+        files = {"file": (local_output_image_path, file, "image/png")}
+        response = requests.post(api_gateway_endpoint, files=files)
+
+    if response.status_code == 200:
+        s3_image_url = response.json().get("s3_image_url")
+        print(f"S3 Image URL: {s3_image_url}")
         return s3_image_url
-
-    except Exception as e:
-        print(f"Error uploading to S3: {str(e)}")  # 追加: S3へのアップロード時のエラーをログに出力
-        raise e
-
-
-def upload_to_s3(local_file, bucket, s3_key, content_type="image/png"):
-    try:
-        s3 = boto3.client(
-            "s3",
-            aws_access_key_id="AKIAYQDI7YN52A2PWHFF",
-            aws_secret_access_key="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",
-        )
-
-        # ExtraArgs パラメータを使用してメタデータを指定
-        extra_args = {
-            "ContentType": content_type,
-        }
-
-        s3.upload_file(local_file, bucket, s3_key, ExtraArgs=extra_args)
-        print("Upload Successful")
-
-    except FileNotFoundError:
-        print("The file was not found")
-    except NoCredentialsError:
-        print("Credentials not available")
+    else:
+        print(f"Error uploading to S3 via API Gateway: {response.text}")
+        raise Exception("S3 upload via API Gateway failed")
