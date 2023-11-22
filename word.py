@@ -17,6 +17,9 @@ def create_cloud(data):
     # valuesからテキストデータを抽出
     text_data = " ".join(data)
 
+    # テキストデータから「・」を削除
+    text_data = text_data.replace("・", "")
+
     # テキストデータをトークナイズ
     custom_dict_path = "./dictionary.csv"
     t = Tokenizer(udic=custom_dict_path, udic_type="simpledic", udic_enc="utf8")
