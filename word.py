@@ -20,6 +20,19 @@ def create_cloud(data):
     # テキストデータから「・」を削除
     text_data = text_data.replace("・", "")
 
+    # 表記ゆれの辞書
+    replace_dict = {
+        "拘り": "こだわり",
+        "こだわる": "こだわり",
+        "総知総力": "総智総力",
+        "ひとづくり": "人づくり"
+        # 追加の表記ゆれに合わせて辞書を拡充
+    }
+
+    # 辞書に基づいて表記ゆれを統一
+    for key, value in replace_dict.items():
+        text_data = text_data.replace(key, value)
+
     # テキストデータをトークナイズ
     custom_dict_path = "./dictionary.csv"
     t = Tokenizer(udic=custom_dict_path, udic_type="simpledic", udic_enc="utf8")
