@@ -193,7 +193,7 @@ def create_cloud(data):
 
     # S3に画像をアップロード
     s3_bucket_name = "denso-wordcloud"  # Replace with your S3 bucket name
-    s3_object_key = "result/denso-wordcloud.png"  # Specify the S3 object key after upload
+    s3_object_key = "result/wordcloud.png"  # Specify the S3 object key after upload
     try:
         upload_to_s3(local_output_image_path, s3_bucket_name, s3_object_key)
 
